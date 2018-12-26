@@ -55,8 +55,6 @@ class Book(models.Model):
 
 import uuid  # Required for unique book instances
 
-from django.contrib.auth.models import User  # Required to assign User as a borrower
-
 
 class BookInstance(models.Model):
     """Model representing a specific copy of a book (i.e. that can be borrowed from the library)."""

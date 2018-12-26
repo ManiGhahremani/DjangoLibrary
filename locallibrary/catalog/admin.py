@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 
-from catalog.models import Author, Genre, Language, Book, BookInstance
+from .models import Author, Genre, Language, Book, BookInstance
 
 # We have commented out the ones that are overwritten using admin functions.
 #admin.site.register(Book)
@@ -12,7 +12,7 @@ admin.site.register(Genre)
 #admin.site.register(Author)
 # Define the admin class
 
-class BookInline(admin.TabularInline):
+class BooksInline(admin.TabularInline):
     """Defines format of inline book insertion (used in AuthorAdmin) """
     model=Book
 
@@ -29,7 +29,7 @@ class AuthorAdmin(admin.ModelAdmin):
     fields=['first_name','last_name', ('date_of_birth', 'date_of_death')]
     inlines=[BooksInline]
 
-# Register the admin class with the associated model
+# Register the admin author class with the associated model
 admin.site.register(Author, AuthorAdmin)
 
 class BookInstanceInline(admin.TabularInline):
@@ -46,11 +46,10 @@ class BookAdmin(admin.ModelAdmin):
     list_display=('title','author','display_genre')
     inlines = [BookInstanceInline]
 
-# Register the Admin classes for Book using the decorator
-@admin.register(Book, BookAdmin)
+# Register the admin book class with associated model
+admin.site.register(Book, BookAdmin)
 
-# Register the Admin classes for BookInstace using the decorator
-@admin.register(BookInstance)
+
 class BookInstanceAdmin(admin.ModelAdmin):
     """Administration object for BookInstace models.
     Defines:
@@ -70,3 +69,6 @@ class BookInstanceAdmin(admin.ModelAdmin):
             'fields': ('status', 'due_back')
         }),
     )
+
+# Register the Admin classes for BookInstace
+admin.site.register(BookInstance)
