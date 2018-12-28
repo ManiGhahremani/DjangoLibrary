@@ -5,30 +5,19 @@ from catalog.models import Book, Author, BookInstance, Genre
 
 def index(request):
     """View function for home page of site."""
-
+    """View function for home page of site."""
     # Generate counts of some of the main objects
     num_books = Book.objects.all().count()
     num_instances = BookInstance.objects.all().count()
-
-    # Available books (status = 'a')
+    # Available copies of books
     num_instances_available = BookInstance.objects.filter(status__exact='a').count()
-
-    # The 'all()' is implied by default.
-    num_authors = Author.objects.count()
-
-    # Count all the books that have 'blah' in their titles
-    num_blah_books = Book.objects.filter(title__contains='blah').count()
-
-    # Count all genres that have 'science' at the beginning
-    num_sceince_genres = Genre.objects.filter(name__startswith='science').count()
+    num_authors = Author.objects.count() # The 'all()' is implied by default.
 
     context = {
         'num_books': num_books,
         'num_instances': num_instances,
         'num_instances_available': num_instances_available,
         'num_authors': num_authors,
-        'num_blah_books': num_blah_books,
-        'num_sceince_genres': num_sceince_genres,
     }
 
     # Render the HTML template index.html with the data in the context variable
@@ -42,3 +31,13 @@ class BookListView(generic.ListView):
 
 class BookDetailView(generic.DetailView):
     model=Book
+
+class AuthorListView(generic.ListView):
+    """Generic class-based list view for a list of authors."""
+    model = Author
+    paginate_by = 10
+
+
+class AuthorDetailView(generic.DetailView):
+    """Generic class-based detail view for an author."""
+    model = Author
